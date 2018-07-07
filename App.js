@@ -4,8 +4,11 @@ import {
 } from 'react-native';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
+import firebase from 'firebase';
+import reducers from './src/reducers';
+import appConfig from './src/config';
 
-const store = createStore((() => {}));
+const store = createStore(reducers);
 
 const styles = StyleSheet.create({
   container: {
@@ -17,6 +20,13 @@ const styles = StyleSheet.create({
 });
 
 export default class App extends Component {
+  componentDidMount = () => {
+    const config = {
+      ...appConfig.firebase,
+    };
+    firebase.initializeApp(config);
+  }
+
   render() {
     return (
       <Provider store={store}>
