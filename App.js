@@ -1,28 +1,27 @@
 import React, { Component } from 'react';
 import {
-  StyleSheet, Text, View,
+  StyleSheet, View,
 } from 'react-native';
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
+import reduxThunk from 'redux-thunk';
 import firebase from 'firebase';
 import reducers from './src/reducers';
-import appConfig from './src/config';
+import { firebaseAPI } from './src/config';
+import LoginForm from './src/components/LoginForm';
 
-const store = createStore(reducers);
+const store = createStore(reducers, {}, applyMiddleware(reduxThunk));
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    marginTop: 20,
   },
 });
 
 export default class App extends Component {
   componentDidMount = () => {
     const config = {
-      ...appConfig.firebase,
+      ...firebaseAPI,
     };
     firebase.initializeApp(config);
   }
@@ -31,7 +30,7 @@ export default class App extends Component {
     return (
       <Provider store={store}>
         <View style={styles.container}>
-          <Text>Welcome to React Native!</Text>
+          <LoginForm />
         </View>
       </Provider>
     );
