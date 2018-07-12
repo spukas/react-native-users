@@ -1,10 +1,25 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { View, Text, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import {
-  Card, CardSection, Button, Input,
+  Card, CardSection, Button, Input, Spinner,
 } from './common';
 import * as actions from '../actions';
+
+const styles = StyleSheet.create({
+  errorView: {
+    alignSelf: 'center',
+    backgroundColor: '#fff',
+    paddingTop: 5,
+    paddingBottom: 5,
+  },
+  errorMessage: {
+    color: 'red',
+    fontSize: 20,
+  },
+});
+
 
 class LoginForm extends React.Component {
   static propTypes = {
@@ -13,6 +28,8 @@ class LoginForm extends React.Component {
     emailChange: PropTypes.func.isRequired,
     passwordChange: PropTypes.func.isRequired,
     loginUser: PropTypes.func.isRequired,
+    error: PropTypes.string.isRequired,
+    loading: PropTypes.bool.isRequired,
   }
 
   handleEmailChange = (text) => {
@@ -28,6 +45,30 @@ class LoginForm extends React.Component {
   handleButtonPress = () => {
     const { loginUser, email, password } = this.props;
     loginUser({ email, password });
+  }
+
+  renderError = () => {
+    const { error } = this.props;
+
+    if (error) {
+      return (
+        <View style={styles.errorView}>
+          <Text style={styles.errorMessage}>{error}</Text>
+        </View>
+      );
+    }
+
+    return null;
+  }
+
+  renderButton = () => {
+    const { loading } = this.props;
+
+    if (loading) {
+      return <Spinner size="large" />;
+    }
+
+    return <Button onPress={this.handleButtonPress}>Login</Button>;
   }
 
   render() {
@@ -54,8 +95,9 @@ class LoginForm extends React.Component {
             secure
           />
         </CardSection>
+        {this.renderError()}
         <CardSection>
-          <Button onPress={this.handleButtonPress}>Login</Button>
+          {this.renderButton()}
         </CardSection>
       </Card>
     );
@@ -65,6 +107,8 @@ class LoginForm extends React.Component {
 const mapStateToProps = state => ({
   email: state.auth.email,
   password: state.auth.password,
+  error: state.auth.error,
+  loading: state.auth.loading,
 });
 
 export default connect(mapStateToProps, actions)(LoginForm);

@@ -1,7 +1,7 @@
 import firebase from 'firebase';
 
 import {
-  EMAIL_CHANGE, PASSWORD_CHANGE, LOGIN_USER_SUCCESS, LOGIN_USER_FAIL,
+  EMAIL_CHANGE, PASSWORD_CHANGE, LOGIN_USER, LOGIN_USER_SUCCESS, LOGIN_USER_FAIL,
 } from './types';
 
 export const emailChange = text => ({
@@ -20,6 +20,8 @@ const loginUserFail = dispatch => dispatch({ type: LOGIN_USER_FAIL });
 
 // reduxThunk lets return a function with the dispatch access
 export const loginUser = ({ email, password }) => async (dispatch) => {
+  dispatch({ type: LOGIN_USER });
+
   try {
     const user = await firebase.auth().signInWithEmailAndPassword(email, password);
     return loginUserSucces(dispatch, user);
