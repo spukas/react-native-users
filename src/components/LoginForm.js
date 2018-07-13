@@ -72,8 +72,6 @@ class LoginForm extends React.Component {
   }
 
   render() {
-    console.log('LoginForm > props', this.props);
-
     const { email, password } = this.props;
 
     return (
