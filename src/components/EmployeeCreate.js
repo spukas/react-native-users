@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Picker } from 'react-native';
+import { Picker, Text, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
 import {
@@ -8,6 +8,10 @@ import {
 } from './common';
 import { weekdays } from './weekdays';
 
+const styles = StyleSheet.create({
+  pickerContainer: { flexDirection: 'column' },
+  pickerLabel: { fontSize: 18, paddingLeft: 20 },
+});
 
 class EmployeeCreate extends Component {
   static propTypes = {
@@ -46,9 +50,9 @@ class EmployeeCreate extends Component {
           />
         </CardSection>
 
-        <CardSection>
+        <CardSection style={styles.pickerContainer}>
+          <Text style={styles.pickerLabel}>Shift</Text>
           <Picker
-            style={{ flex: 1 }}
             selectedValue={shift}
             onValueChange={this.handleChange('shift')}
           >

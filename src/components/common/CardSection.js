@@ -14,12 +14,17 @@ const styles = StyleSheet.create({
   },
 });
 
-export const CardSection = props => (
-  <View style={styles.container}>
-    {props.children}
+export const CardSection = ({ children, style }) => (
+  <View style={[styles.container, style]}>
+    {children}
   </View>
 );
 
 CardSection.propTypes = {
   children: PropTypes.node.isRequired,
+  style: PropTypes.shape({}),
+};
+
+CardSection.defaultProps = {
+  style: {},
 };
