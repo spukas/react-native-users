@@ -1,2 +1,2 @@
 export { emailChange, passwordChange, loginUser } from './authActions';
-export { employeeUpdate } from './employeeActions';
+export { employeeUpdate, employeeCreate, employeesFetch } from './employeeActions';

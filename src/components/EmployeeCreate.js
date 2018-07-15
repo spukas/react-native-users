@@ -4,7 +4,11 @@ import { Picker, Text, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
 import {
-  Card, CardSection, Button, Input, Spinner,
+  Card,
+  CardSection,
+  Button,
+  Input,
+  // Spinner,
 } from './common';
 import { weekdays } from './weekdays';
 
@@ -19,12 +23,21 @@ class EmployeeCreate extends Component {
     phone: PropTypes.string.isRequired,
     shift: PropTypes.string.isRequired,
     employeeUpdate: PropTypes.func.isRequired,
+    employeeCreate: PropTypes.func.isRequired,
   }
 
   handleChange = props => (value) => {
     const { employeeUpdate: employeeUpdateAction } = this.props;
 
     employeeUpdateAction({ props, value });
+  }
+
+  handleButtonPress = () => {
+    const {
+      name, phone, shift, employeeCreate: employeeCreateAction,
+    } = this.props;
+
+    employeeCreateAction({ name, phone, shift: shift || 'Monday' });
   }
 
   render() {
@@ -62,7 +75,7 @@ class EmployeeCreate extends Component {
         </CardSection>
 
         <CardSection>
-          <Button onPress={() => {}}>
+          <Button onPress={this.handleButtonPress}>
             Create
           </Button>
         </CardSection>
