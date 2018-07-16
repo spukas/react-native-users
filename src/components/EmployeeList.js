@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Text, View, ListView } from 'react-native';
+import { ListView } from 'react-native';
+import { EmployeeListItem } from './EmployeeListItem';
 import * as actions from '../actions';
 
 class EmployeeList extends Component {
@@ -29,31 +30,24 @@ class EmployeeList extends Component {
   }
 
   render() {
-    console.log('EmployeeList > props ', this.props);
     return (
-      <View>
-        <Text> Eployee of the month </Text>
-        <Text> Eployee of the month </Text>
-        <Text> Eployee of the month </Text>
-        <Text> Eployee of the month </Text>
-      </View>
+      <ListView
+        enableEmptySections
+        dataSource={this.dataSource}
+        renderRow={row => <EmployeeListItem item={row} />}
+      />
     );
   }
 }
 
 const mapStateToProps = (state) => {
-  console.log('state: ', state);
   const { employees: data } = state;
 
   const employees = Object.keys(data)
     .map(key => ({
       id: key,
-      name: data[key].name,
-      phone: data[key].phone,
-      shift: data[key].shift,
-
+      ...data[key],
     }));
-  console.log('employees: ', employees);
 
   return { employees };
 };
