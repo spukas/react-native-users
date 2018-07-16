@@ -1,35 +1,17 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Picker, Text, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
-import * as actions from '../actions';
-import {
-  Card,
-  CardSection,
-  Button,
-  Input,
-  // Spinner,
-} from './common';
-import { weekdays } from './weekdays';
+import { employeeCreate } from '../actions';
+import { Card, CardSection, Button } from './common';
+import EmployeeForm from './EmployeeForm';
 
-const styles = StyleSheet.create({
-  pickerContainer: { flexDirection: 'column' },
-  pickerLabel: { fontSize: 18, paddingLeft: 20 },
-});
 
 class EmployeeCreate extends Component {
   static propTypes = {
     name: PropTypes.string.isRequired,
     phone: PropTypes.string.isRequired,
     shift: PropTypes.string.isRequired,
-    employeeUpdate: PropTypes.func.isRequired,
     employeeCreate: PropTypes.func.isRequired,
-  }
-
-  handleChange = props => (value) => {
-    const { employeeUpdate: employeeUpdateAction } = this.props;
-
-    employeeUpdateAction({ props, value });
   }
 
   handleButtonPress = () => {
@@ -41,39 +23,9 @@ class EmployeeCreate extends Component {
   }
 
   render() {
-    const { name, phone, shift } = this.props;
-
     return (
       <Card>
-        <CardSection>
-          <Input
-            label="Name"
-            placeholder="Linas"
-            text={name}
-            onTextChange={this.handleChange('name')}
-          />
-        </CardSection>
-
-        <CardSection>
-          <Input
-            label="Phone"
-            placeholder="000-000-000"
-            text={phone}
-            onTextChange={this.handleChange('phone')}
-          />
-        </CardSection>
-
-        <CardSection style={styles.pickerContainer}>
-          <Text style={styles.pickerLabel}>Shift</Text>
-          <Picker
-            selectedValue={shift}
-            onValueChange={this.handleChange('shift')}
-          >
-            {weekdays
-              .map(({ label, value }) => <Picker.Item key={label} label={label} value={value} />)}
-          </Picker>
-        </CardSection>
-
+        <EmployeeForm {...this.props} />
         <CardSection>
           <Button onPress={this.handleButtonPress}>
             Create
@@ -92,4 +44,4 @@ const mapStateToProps = state => ({
   shift: state.form.shift,
 });
 
-export default connect(mapStateToProps, actions)(EmployeeCreate);
+export default connect(mapStateToProps, { employeeCreate })(EmployeeCreate);
