@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Text, StyleSheet } from 'react-native';
+import {
+  TouchableWithoutFeedback, View, Text, StyleSheet,
+} from 'react-native';
+import { Actions } from 'react-native-router-flux';
 import { CardSection } from './common';
 
 const styles = StyleSheet.create({
@@ -15,18 +18,26 @@ export class EmployeeListItem extends Component {
     static propTypes = {
       item: PropTypes.shape({
         name: PropTypes.string.isRequired,
-        phone: PropTypes.string.isRequired,
-        shift: PropTypes.string.isRequired,
       }).isRequired,
     }
 
+    handleNamePress = () => {
+      const { item } = this.props;
+
+      Actions.employeeCreate({ employee: item });
+    }
+
     render() {
-      const { item: { name, phone, shift } } = this.props;
+      const { item: { name } } = this.props;
 
       return (
-        <CardSection>
-          <Text style={styles.name}>{name}</Text>
-        </CardSection>
+        <TouchableWithoutFeedback onPress={this.handleNamePress}>
+          <View>
+            <CardSection>
+              <Text style={styles.name}>{name}</Text>
+            </CardSection>
+          </View>
+        </TouchableWithoutFeedback>
       );
     }
 }
