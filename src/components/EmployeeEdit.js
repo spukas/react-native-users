@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import Communications from 'react-native-communications';
 import { employeeUpdate, employeeSave, employeeClearForm } from '../actions';
 import { Card, CardSection, Button } from './common';
 import EmployeeForm from './EmployeeForm';
@@ -30,7 +31,7 @@ class EmployeeEdit extends Component {
   }
 
 
-  handleButtonPress = () => {
+  handleSavePress = () => {
     const {
       name,
       phone,
@@ -44,13 +45,23 @@ class EmployeeEdit extends Component {
     });
   }
 
+  handleTextPress = () => {
+    const { phone, shift } = this.props;
+    console.log('{ phone, shift }: ', { phone, shift });
+
+    Communications.text(phone, `Your schedule is on ${shift}`);
+  }
+
   render() {
     return (
       <Card>
         <EmployeeForm {...this.props} />
         <CardSection>
-          <Button onPress={this.handleButtonPress}>
+          <Button onPress={this.handleSavePress}>
             Save Changes
+          </Button>
+          <Button onPress={this.handleTextPress}>
+            Text Schedule
           </Button>
         </CardSection>
 
