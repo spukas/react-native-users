@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
 });
 
 export const ConfirmModal = ({
-  children, visible, onConfirm, onReject,
+  children, visible, onConfirm, onCancel,
 }) => (
   <Modal
     transparent
@@ -39,7 +39,7 @@ export const ConfirmModal = ({
       </CardSection>
       <CardSection>
         <Button onPress={onConfirm}> Confirm </Button>
-        <Button onPress={onReject}> Reject </Button>
+        <Button onPress={onCancel}> Cancel </Button>
       </CardSection>
     </View>
   </Modal>
@@ -49,5 +49,5 @@ ConfirmModal.propTypes = {
   children: PropTypes.node.isRequired,
   visible: PropTypes.bool.isRequired,
   onConfirm: PropTypes.func.isRequired,
-  onReject: PropTypes.func.isRequired,
+  onCancel: PropTypes.func.isRequired,
 };

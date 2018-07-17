@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Communications from 'react-native-communications';
-import { employeeUpdate, employeeSave, employeeClearForm } from '../actions';
+import {
+  employeeUpdate, employeeSave, employeeClearForm, employeeRemove,
+} from '../actions';
 import {
   Card, CardSection, Button, ConfirmModal,
 } from './common';
@@ -18,6 +20,7 @@ class EmployeeEdit extends Component {
     employeeUpdate: PropTypes.func.isRequired,
     employeeSave: PropTypes.func.isRequired,
     employeeClearForm: PropTypes.func.isRequired,
+    employeeRemove: PropTypes.func.isRequired,
   }
 
   state = {
@@ -34,6 +37,7 @@ class EmployeeEdit extends Component {
     const { employeeClearForm: employeeClearFormAction } = this.props;
 
     employeeClearFormAction();
+    this.closeModal();
   }
 
 
@@ -57,11 +61,20 @@ class EmployeeEdit extends Component {
     Communications.text(phone, `Your schedule is on ${shift}`);
   }
 
-  handleFirePress = () => this.setState(prevState => ({ showModal: !prevState.showModal }));
+  openModal = () => this.setState({ showModal: true });
 
-  handleModalConfirm = () => {};
+  closeModal = () => this.setState({ showModal: false });
 
-  handleModalReject = () => {};
+  handleFirePress = () => this.openModal();
+
+  handleModalConfirm = () => {
+    const { employee, employeeRemove: employeeRemoveAction } = this.props;
+
+    employeeRemoveAction({ uid: employee.id });
+    this.closeModal();
+  };
+
+  handleModalCancel = () => this.closeModal();
 
   render() {
     const { showModal } = this.state;
@@ -88,7 +101,7 @@ class EmployeeEdit extends Component {
         <ConfirmModal
           visible={showModal}
           onConfirm={this.handleModalConfirm}
-          onReject={this.handleModalReject}
+          onCancel={this.handleModalCancel}
         >
           Fire employee?
         </ConfirmModal>
@@ -108,4 +121,5 @@ export default connect(mapStateToProps,
     employeeUpdate,
     employeeSave,
     employeeClearForm,
+    employeeRemove,
   })(EmployeeEdit);

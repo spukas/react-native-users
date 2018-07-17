@@ -45,9 +45,19 @@ export const employeeSave = ({
       .set({ name, phone, shift })
       .then(() => {
         dispatch({ type: EMPLOYEE_CLEAR_FORM });
-        Actions.employees();
+        Actions.main({ type: 'reset' });
       });
   };
 };
 
 export const employeeClearForm = () => ({ type: EMPLOYEE_CLEAR_FORM });
+
+export const employeeRemove = ({ uid }) => {
+  const { currentUser } = firebase.auth();
+
+  return () => firebase
+    .database()
+    .ref(`/users/${currentUser.uid}/employees/${uid}`)
+    .remove()
+    .then(() => Actions.main({ type: 'reset' }));
+};
