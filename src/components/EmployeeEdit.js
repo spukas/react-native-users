@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Communications from 'react-native-communications';
 import { employeeUpdate, employeeSave, employeeClearForm } from '../actions';
-import { Card, CardSection, Button } from './common';
+import {
+  Card, CardSection, Button, ConfirmModal,
+} from './common';
 import EmployeeForm from './EmployeeForm';
 
 
@@ -16,6 +18,10 @@ class EmployeeEdit extends Component {
     employeeUpdate: PropTypes.func.isRequired,
     employeeSave: PropTypes.func.isRequired,
     employeeClearForm: PropTypes.func.isRequired,
+  }
+
+  state = {
+    showModal: false,
   }
 
   componentWillMount = () => {
@@ -47,12 +53,19 @@ class EmployeeEdit extends Component {
 
   handleTextPress = () => {
     const { phone, shift } = this.props;
-    console.log('{ phone, shift }: ', { phone, shift });
 
     Communications.text(phone, `Your schedule is on ${shift}`);
   }
 
+  handleFirePress = () => this.setState(prevState => ({ showModal: !prevState.showModal }));
+
+  handleModalConfirm = () => {};
+
+  handleModalReject = () => {};
+
   render() {
+    const { showModal } = this.state;
+
     return (
       <Card>
         <EmployeeForm {...this.props} />
@@ -60,12 +73,25 @@ class EmployeeEdit extends Component {
           <Button onPress={this.handleSavePress}>
             Save Changes
           </Button>
+        </CardSection>
+        <CardSection>
           <Button onPress={this.handleTextPress}>
             Text Schedule
           </Button>
         </CardSection>
+        <CardSection>
+          <Button onPress={this.handleFirePress}>
+            Fire employee
+          </Button>
+        </CardSection>
 
-
+        <ConfirmModal
+          visible={showModal}
+          onConfirm={this.handleModalConfirm}
+          onReject={this.handleModalReject}
+        >
+          Fire employee?
+        </ConfirmModal>
       </Card>
     );
   }

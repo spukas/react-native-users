@@ -4,3 +4,4 @@ export * from './CardSection';
 export * from './Header';
 export { Input } from './Input';
 export { Spinner } from './Spinner';
+export { ConfirmModal } from './ConfirmModal';
