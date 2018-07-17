@@ -24,7 +24,7 @@ export class EmployeeListItem extends Component {
     handleNamePress = () => {
       const { item } = this.props;
 
-      Actions.employeeCreate({ employee: item });
+      Actions.employeeEdit({ employee: item });
     }
 
     render() {
