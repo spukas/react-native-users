@@ -3,6 +3,7 @@ import { Actions } from 'react-native-router-flux';
 import {
   EMPLOYEE_UPDATE,
   EMPLOYEE_CREATE,
+  EMPLOYEE_CLEAR_FORM,
   EMPLOYEES_FETCH_SUCCESS,
 } from './types';
 
@@ -39,8 +40,14 @@ export const employeeSave = ({
 }) => {
   const { currentUser } = firebase.auth();
 
-  return () => {
+  return (dispatch) => {
     firebase.database().ref(`/users/${currentUser.uid}/employees/${uid}`)
-      .set({ name, phone, shift });
+      .set({ name, phone, shift })
+      .then(() => {
+        dispatch({ type: EMPLOYEE_CLEAR_FORM });
+        Actions.employees();
+      });
   };
 };
+
+export const employeeClearForm = () => ({ type: EMPLOYEE_CLEAR_FORM });
