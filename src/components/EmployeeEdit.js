@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { employeeUpdate } from '../actions';
+import { employeeUpdate, employeeSave } from '../actions';
 import { Card, CardSection, Button } from './common';
 import EmployeeForm from './EmployeeForm';
 
@@ -13,6 +13,7 @@ class EmployeeEdit extends Component {
     shift: PropTypes.string.isRequired,
     employee: PropTypes.shape({}).isRequired,
     employeeUpdate: PropTypes.func.isRequired,
+    employeeSave: PropTypes.func.isRequired,
   }
 
   componentWillMount = () => {
@@ -24,11 +25,16 @@ class EmployeeEdit extends Component {
 
   handleButtonPress = () => {
     const {
-      name, phone, shift, employeeUpdate: employeeUpdateAction,
+      name,
+      phone,
+      shift,
+      employee,
+      employeeSave: employeeSaveAction,
     } = this.props;
 
-    console.log({ name, phone, shift });
-    // employeeUpdateAction({ name, phone, shift: shift || 'Monday' });
+    employeeSaveAction({
+      name, phone, shift, uid: employee.id,
+    });
   }
 
   render() {
@@ -54,4 +60,4 @@ const mapStateToProps = state => ({
   shift: state.form.shift,
 });
 
-export default connect(mapStateToProps, { employeeUpdate })(EmployeeEdit);
+export default connect(mapStateToProps, { employeeUpdate, employeeSave })(EmployeeEdit);
